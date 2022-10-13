@@ -6,7 +6,7 @@ import org.koin.core.component.get
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class WorldTest: TestCase() {
+class WorldTest : TestCase() {
     
     class StringComponent(var name: String) : Component
     
@@ -24,7 +24,7 @@ class WorldTest: TestCase() {
         val world = World()
         
         world += StringTestSystem()
-    
+        
         val e1 = get<Entity>()
         e1.add(StringComponent("test"))
         
