@@ -1,6 +1,6 @@
 package dev.mpardo.angine.test
 
-import dev.mpardo.angine.structure.StrictPool
+import dev.mpardo.angine.memory.StrictPool
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFails

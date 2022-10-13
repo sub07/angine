@@ -1,4 +1,4 @@
-package dev.mpardo.angine.structure
+package dev.mpardo.angine.memory
 
 interface Pool<T> {
     fun pool(): T
@@ -16,8 +16,8 @@ inline fun <T, R> Pool<T>.borrow(block: (T) -> R): R {
  * A very simple pool implementation with no overhead.
  */
 
-abstract class SimplePool<T> : Pool<T> {
-    private val pool = mutableListOf<T>()
+abstract class SimplePool<T>(initialSize: Int) : Pool<T> {
+    private val pool = MutableList(initialSize) { create() }
     
     override fun pool() = if (pool.isEmpty()) create() else pool.removeAt(pool.size - 1)
     

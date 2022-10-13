@@ -1,4 +1,4 @@
-package dev.mpardo.angine.structure
+package dev.mpardo.angine.collection
 
 class ExtensibleArray<T>(initialSize: Int = 10) {
     private var data: Array<Any?> = Array(initialSize) { null }

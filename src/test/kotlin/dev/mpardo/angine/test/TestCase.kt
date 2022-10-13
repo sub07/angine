@@ -1,9 +1,9 @@
 package dev.mpardo.angine.test
 
 import dev.mpardo.angine.ecs.*
-import dev.mpardo.angine.structure.BitSet
-import dev.mpardo.angine.structure.BooleanArrayBitSet
-import dev.mpardo.angine.structure.MutableBitSet
+import dev.mpardo.angine.collection.BitSet
+import dev.mpardo.angine.collection.BooleanArrayBitSet
+import dev.mpardo.angine.collection.MutableBitSet
 import org.koin.core.component.KoinComponent
 import org.koin.core.context.startKoin
 import org.koin.core.logger.Level

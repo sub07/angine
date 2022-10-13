@@ -1,4 +1,4 @@
-package dev.mpardo.angine.structure
+package dev.mpardo.angine.collection
 
 interface BitSet {
     val trueIndexes: Collection<Int>
