@@ -2,7 +2,6 @@ package dev.sub07.angine.graphics
 
 import dev.sub07.angine.AngineConfiguration
 import dev.sub07.angine.event.*
-import dev.sub07.angine.event.glfwToEngineAction
 import dev.sub07.angine.math.Vec
 import dev.sub07.angine.math.vec
 import dev.sub07.angine.memory.Disposable

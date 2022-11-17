@@ -295,6 +295,7 @@ class GLShader(
             is Color -> glUniform4f(
                 location, value.r, value.g, value.b, value.a
             )
+            
             is Vec -> glUniform2f(location, value.xc, value.yc)
             is FloatArray -> glUniform4fv(location, value)
             is IntArray -> glUniform1iv(location, value)

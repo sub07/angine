@@ -39,7 +39,7 @@ abstract class BatchedRenderer(
     protected var nbVertices: Int = 0
         private set
     
-    var camera: Camera = Camera(1f).also { shader.send(it) }
+    var camera: Camera = Camera(600).also { shader.send(it) }
         set(value) {
             field = value
             shader.send(field)

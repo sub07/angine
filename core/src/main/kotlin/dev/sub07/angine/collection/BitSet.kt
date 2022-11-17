@@ -2,7 +2,6 @@ package dev.sub07.angine.collection
 
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
-import org.koin.dsl.module
 
 interface BitSet {
     val trueIndexes: Collection<Int>
@@ -58,10 +57,6 @@ class BooleanArrayBitSet : MutableBitSet {
         other[maxSize]
         return (0 until maxSize).any { data[it] == other[it] }
     }
-}
-
-val booleanArrayBitSetModule = module {
-    factory<MutableBitSet> { BooleanArrayBitSet() }
 }
 
 fun KoinComponent.mutableBitSet() = get<MutableBitSet>()

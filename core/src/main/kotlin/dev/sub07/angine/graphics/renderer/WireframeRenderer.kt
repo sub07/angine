@@ -12,7 +12,7 @@ import dev.sub07.angine.math.Vec
 import dev.sub07.angine.memory.Floats
 import org.koin.core.component.KoinComponent
 
-class WireframeRenderer(config: dev.sub07.angine.AngineConfiguration, val graphics: Graphics, shader: Shader = graphics.makeShader(vSources, fSources)) :
+class WireframeRenderer(config: AngineConfiguration, private val graphics: Graphics, shader: Shader = graphics.makeShader(vSources, fSources)) :
     BatchedRenderer(config.batchSize, components, shader, graphics), KoinComponent {
     
     override fun flushImpl() {

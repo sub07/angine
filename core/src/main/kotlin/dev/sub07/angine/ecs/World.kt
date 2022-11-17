@@ -2,14 +2,15 @@ package dev.sub07.angine.ecs
 
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
+import kotlin.time.Duration
 
 class World : KoinComponent {
     private val systems = mutableSetOf<System>()
     private val entities = mutableSetOf<Entity>()
     
-    fun step() {
+    fun step(dt: Duration) {
         systems.forEach {
-            it.update(entities)
+            it.update(entities, dt)
         }
     }
     
@@ -29,11 +30,11 @@ class World : KoinComponent {
         systems.remove(s)
     }
     
-    operator fun plusAssign(something: System) {
-        systems.add(something)
+    operator fun plusAssign(system: System) {
+        systems.add(system)
     }
     
-    operator fun plusAssign(something: Entity) {
-        entities.add(something)
+    operator fun plusAssign(e: Entity) {
+        entities.add(e)
     }
 }

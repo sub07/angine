@@ -42,7 +42,7 @@ private class FloatsImpl(override val data: FloatArray) : Floats, MutableFloats 
     
     override fun slice(indices: IntRange): MutableFloats = FloatsImpl(data.sliceArray(indices))
     
-    override fun eq(other: Floats): Boolean {
+    override infix fun eq(other: Floats): Boolean {
         if (other.size != size) return false
         for (i in indices) {
             if (data[i] != other[i]) return false
@@ -50,7 +50,7 @@ private class FloatsImpl(override val data: FloatArray) : Floats, MutableFloats 
         return true
     }
     
-    override fun neq(other: Floats): Boolean = !eq(other)
+    override infix fun neq(other: Floats): Boolean = !eq(other)
     
     override fun iterator(): Iterator<Float> = data.iterator()
 }

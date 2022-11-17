@@ -1,11 +1,10 @@
 package dev.sub07.angine
 
-import dev.sub07.angine.ecs.escModule
 import dev.sub07.angine.event.*
 import dev.sub07.angine.graphics.Window
-import dev.sub07.angine.graphics.primitive.GLGraphics
 import dev.sub07.angine.graphics.primitive.Graphics
 import dev.sub07.angine.graphics.renderer.WireframeRenderer
+import dev.sub07.angine.scene.Scene
 import dev.sub07.angine.utils.now
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
@@ -14,15 +13,6 @@ import org.koin.core.context.startKoin
 import org.koin.core.logger.Level
 import org.koin.core.logger.PrintLogger
 import org.koin.core.module.Module
-import org.koin.dsl.module
-import kotlin.time.Duration
-
-val angineModule = module {
-    single { Angine() }
-    single { Window() }
-    single { WireframeRenderer(get(), get()) }
-    single<Graphics> { GLGraphics() }
-}
 
 data class AngineConfiguration(
     val windowWidth: Int = 800,
@@ -43,7 +33,6 @@ data class AngineConfiguration(
 
 class Angine : KoinComponent {
     val window = get<Window>()
-    val config by inject<AngineConfiguration>()
     val graphics by inject<Graphics>()
     
     var done: Boolean = false
@@ -54,7 +43,6 @@ class Angine : KoinComponent {
     val resizeEventListeners = mutableListOf<ResizeEventListener>()
     
     init {
-        graphics.initialize(false)
         window.keyCallback = ::keyCallback
         window.mouseButtonCallback = ::mouseCallback
         window.mouseMove = ::mouseMoveCallback
@@ -62,6 +50,7 @@ class Angine : KoinComponent {
         window.framebufferSizeCallback = ::framebufferCallback
         window.windowSizeCallback = ::windowResizeCallback
         window.windowPositionCallback = ::windowMoveCallback
+        graphics.initialize(false)
     }
     
     private fun run() {
@@ -69,12 +58,15 @@ class Angine : KoinComponent {
         
         windowResizeCallback(window.width, window.height)
         
+        val initialScene = get<Scene>()
+        
         var last = now
         while (!done) {
             val dt = now - last
             last = now
             graphics.clear()
             window.pollEvent()
+            initialScene.world.step(dt)
             window.swapBuffers()
         }
         
@@ -140,10 +132,8 @@ class Angine : KoinComponent {
     
     companion object : KoinComponent {
         fun launch(vararg userModules: Module) {
-            val koin = startKoin {
+            val koinInstance = startKoin {
                 logger(PrintLogger(Level.ERROR))
-                modules(angineModule)
-                modules(escModule)
                 modules(*userModules)
             }
             
@@ -153,7 +143,7 @@ class Angine : KoinComponent {
             get<WireframeRenderer>().dispose()
             get<Window>().dispose()
             
-            koin.close()
+            koinInstance.close()
         }
     }
 }
