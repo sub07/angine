@@ -1,9 +1,0 @@
-package dev.mpardo.angine.ecs
-
-abstract class System(private val entityFilter: EntityFilter) {
-    fun update(entities: Set<Entity>) {
-        doUpdate(entityFilter.get(entities.filter { it.active }))
-    }
-    
-    protected abstract fun doUpdate(entities: List<Entity>)
-}
