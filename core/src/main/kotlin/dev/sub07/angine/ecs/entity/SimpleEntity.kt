@@ -11,10 +11,11 @@ class SimpleEntity : Entity, KoinComponent {
     override val id: Long = idCounter.getAndIncrement()
     override var active: Boolean = true
     override val components = mutableListOf<Component>()
-    
+
     @Suppress("UNCHECKED_CAST")
-    override fun <C : Component> get(componentType: KClass<C>): C? = components.firstOrNull { it::class == componentType } as? C
-    
+    override fun <C : Component> get(componentType: KClass<C>): C? =
+        components.firstOrNull { it::class == componentType } as? C
+
     override fun <C : Component> add(component: C, replace: Boolean) {
         remove(component::class).let {
             components.add(
@@ -24,7 +25,7 @@ class SimpleEntity : Entity, KoinComponent {
             )
         }
     }
-    
+
     override fun <C : Component> remove(componentType: KClass<C>): C? {
         val index = components.indexOfFirst { it::class == componentType }
         return if (index == -1) {
@@ -34,21 +35,21 @@ class SimpleEntity : Entity, KoinComponent {
             components.removeAt(index) as? C
         }
     }
-    
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other !is SimpleEntity) return false
-        
+
         if (id != other.id) return false
-        
+
         return true
     }
-    
+
     override fun hashCode(): Int {
         return id.hashCode()
     }
-    
-    
+
+
     companion object {
         private val idCounter = AtomicLong(0)
     }

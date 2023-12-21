@@ -19,19 +19,19 @@ abstract class TestCase : KoinComponent {
             startKoin {
                 printLogger(level = Level.ERROR)
                 allowOverride(false)
-                
+
                 val m = module {
                     factory<BitSet> { BooleanArrayBitSet() }
                     factory<MutableBitSet> { BooleanArrayBitSet() }
                     factory<Entity> { SimpleEntity() }
                     factory<EntityFilter> { param -> SimpleEntityFilter(param.get()) }
                 }
-                
+
                 modules(m)
             }
         }
     }
-    
+
     companion object {
         private var koinInit = AtomicBoolean(false)
     }

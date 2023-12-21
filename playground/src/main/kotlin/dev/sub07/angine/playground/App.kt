@@ -56,7 +56,10 @@ data class ShapeComponent(
 ) : Component
 
 data class TransformComponent(
-    val translation: MutableVec = vec(0), val scale: MutableVec = vec(1), var rotation: Float = 0f, val origin: MutableVec = vec(0)
+    val translation: MutableVec = vec(0),
+    val scale: MutableVec = vec(1),
+    var rotation: Float = 0f,
+    val origin: MutableVec = vec(0)
 ) : Component {
     fun intoVertexTransformer() = VertexTransformer(translation, scale, rotation, origin)
 }
@@ -68,8 +71,9 @@ class ShapeSystem : System(entityFilter { required(ShapeComponent::class) }), Ko
             entities.forEach { entity ->
                 val shapeComponent = entity[ShapeComponent::class]!!
                 val vertexTransformer = entity[TransformComponent::class]?.intoVertexTransformer()
-                val transformedVertex = vertexTransformer?.transformed(shapeComponent.vertices) ?: shapeComponent.vertices
-                
+                val transformedVertex =
+                    vertexTransformer?.transformed(shapeComponent.vertices) ?: shapeComponent.vertices
+
                 if (shapeComponent.isWireframe) {
                     if (shapeComponent.isClosedShape) {
                         wireframeRenderer.polygon(transformedVertex)

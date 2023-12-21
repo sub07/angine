@@ -26,22 +26,22 @@ private class FloatsImpl(override val data: FloatArray) : Floats, MutableFloats 
     override fun set(index: Int, value: Float) {
         data[index] = value
     }
-    
+
     override fun set(index: Int, value: Vec) {
         data[index] = value.xc
         data[index + 1] = value.yc
     }
-    
+
     override val size: Int = data.size
     override val indices: IntRange = data.indices
     override val array: FloatArray = data.clone()
-    
+
     override fun get(index: Int): Float = data[index]
-    
+
     override fun copy(): MutableFloats = FloatsImpl(data.clone())
-    
+
     override fun slice(indices: IntRange): MutableFloats = FloatsImpl(data.sliceArray(indices))
-    
+
     override infix fun eq(other: Floats): Boolean {
         if (other.size != size) return false
         for (i in indices) {
@@ -49,9 +49,9 @@ private class FloatsImpl(override val data: FloatArray) : Floats, MutableFloats 
         }
         return true
     }
-    
+
     override infix fun neq(other: Floats): Boolean = !eq(other)
-    
+
     override fun iterator(): Iterator<Float> = data.iterator()
 }
 
@@ -100,7 +100,10 @@ inline fun Floats.forEachPair(loop: Boolean = true, block: (x1: Float, y1: Float
     }
 }
 
-inline fun Floats.forEachTriangle(loop: Boolean = false, block: (x1: Float, y1: Float, x2: Float, y2: Float, x3: Float, y3: Float) -> Unit) {
+inline fun Floats.forEachTriangle(
+    loop: Boolean = false,
+    block: (x1: Float, y1: Float, x2: Float, y2: Float, x3: Float, y3: Float) -> Unit
+) {
     checkEnough(6)
     for (i in indices step 6) {
         block(this[i], this[i + 1], this[i + 2], this[i + 3], this[i + 4], this[i + 5])
@@ -112,14 +115,24 @@ inline fun Floats.forEachTriangle(loop: Boolean = false, block: (x1: Float, y1: 
 }
 
 inline fun Floats.forEachQuad(
-    loop: Boolean = false, block: (x1: Float, y1: Float, x2: Float, y2: Float, x3: Float, y3: Float, x4: Float, y4: Float) -> Unit
+    loop: Boolean = false,
+    block: (x1: Float, y1: Float, x2: Float, y2: Float, x3: Float, y3: Float, x4: Float, y4: Float) -> Unit
 ) {
     checkEnough(8)
     for (i in indices step 8) {
         block(this[i], this[i + 1], this[i + 2], this[i + 3], this[i + 4], this[i + 5], this[i + 6], this[i + 7])
     }
     if (loop) {
-        block(this[size - 6], this[size - 5], this[size - 4], this[size - 3], this[size - 2], this[size - 1], this[0], this[1])
+        block(
+            this[size - 6],
+            this[size - 5],
+            this[size - 4],
+            this[size - 3],
+            this[size - 2],
+            this[size - 1],
+            this[0],
+            this[1]
+        )
         block(this[size - 4], this[size - 3], this[size - 2], this[size - 1], this[0], this[1], this[2], this[3])
         block(this[size - 2], this[size - 1], this[0], this[1], this[2], this[3], this[4], this[5])
     }

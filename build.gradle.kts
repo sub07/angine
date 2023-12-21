@@ -7,14 +7,14 @@ plugins {
 allprojects {
     group = "dev.sub07"
     version = "0.0.1"
-    
+
     repositories {
         mavenCentral()
     }
-    
+
     tasks.withType<KotlinCompile> {
         kotlinOptions {
-            jvmTarget = "17"
+            jvmTarget = "21"
             freeCompilerArgs = freeCompilerArgs + listOf(
                 "-opt-in=kotlin.time.ExperimentalTime"
             )

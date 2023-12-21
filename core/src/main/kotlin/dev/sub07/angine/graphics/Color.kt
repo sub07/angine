@@ -10,14 +10,14 @@ class Color(r: Float = 0f, g: Float = 0f, b: Float = 0f, a: Float = 1f) {
     val g: Float = g.coerceIn(0f, 1f)
     val b: Float = b.coerceIn(0f, 1f)
     val a: Float = a.coerceIn(0f, 1f)
-    
+
     val rgba: Int = (a * 255).i shl 24 or (r * 255).i shl 16 or (g * 255).i shl 8 or (b * 255).i
-    
+
     val rByte: Byte = (r * 255).b
     val gByte: Byte = (g * 255).b
     val bByte: Byte = (b * 255).b
     val aByte: Byte = (a * 255).b
-    
+
     operator fun get(index: Int) = when (index) {
         0 -> r
         1 -> g
@@ -25,7 +25,7 @@ class Color(r: Float = 0f, g: Float = 0f, b: Float = 0f, a: Float = 1f) {
         3 -> a
         else -> throw IndexOutOfBoundsException()
     }
-    
+
     fun getByte(index: Int) = when (index) {
         0 -> rByte
         1 -> gByte
@@ -33,7 +33,7 @@ class Color(r: Float = 0f, g: Float = 0f, b: Float = 0f, a: Float = 1f) {
         3 -> aByte
         else -> throw IndexOutOfBoundsException()
     }
-    
+
     companion object {
         val Transparent = from(0, 0, 0, 0)
         val DarkGrey = from(50, 50, 50, 255)
@@ -184,7 +184,7 @@ class Color(r: Float = 0f, g: Float = 0f, b: Float = 0f, a: Float = 1f) {
         val Whitesmoke = from(245, 245, 245, 255)
         val Yellow = from(255, 255, 0, 255)
         val Yellowgreen = from(154, 205, 50, 255)
-        
+
         fun from(hex: String): Color {
             @Suppress("NAME_SHADOWING") val hex = hex.trim().replace("#", "")
             val r = Integer.parseInt(hex.substring(0, 2), 16)
@@ -197,9 +197,9 @@ class Color(r: Float = 0f, g: Float = 0f, b: Float = 0f, a: Float = 1f) {
                 from(r, g, b, 255)
             }
         }
-        
+
         fun from(r: Int, g: Int = 0, b: Int = 0, a: Int = 255) = Color(r / 255f, g / 255f, b / 255f, a / 255f)
-        
+
         fun random(randomAlpha: Boolean = false, random: Random = Random) = Color(
             random.nextFloat(),
             random.nextFloat(),

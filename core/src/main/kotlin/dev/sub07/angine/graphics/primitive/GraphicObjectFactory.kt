@@ -15,7 +15,7 @@ interface GraphicObjectFactory {
         filter: TextureFilter = TextureFilter.Linear,
         wrap: TextureWrap = TextureWrap.Repeat
     ): Texture
-    
+
     fun makeFramebuffer(width: Int, height: Int): Framebuffer
     fun makeAutoResizedFramebuffer(width: Int, height: Int): Framebuffer
     fun makeShader(vertexSources: String, fragmentSources: String): Shader

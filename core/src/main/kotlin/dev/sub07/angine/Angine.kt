@@ -34,14 +34,14 @@ data class AngineConfiguration(
 class Angine : KoinComponent {
     val window = get<Window>()
     val graphics by inject<Graphics>()
-    
+
     var done: Boolean = false
         get() = window.done || field
     val keyboardState = KeyboardState()
     val mouseState = MouseState()
     private var modifiers = Modifiers()
     val resizeEventListeners = mutableListOf<ResizeEventListener>()
-    
+
     init {
         window.keyCallback = ::keyCallback
         window.mouseButtonCallback = ::mouseCallback
@@ -52,14 +52,14 @@ class Angine : KoinComponent {
         window.windowPositionCallback = ::windowMoveCallback
         graphics.initialize(false)
     }
-    
+
     private fun run() {
         window.visible = true
-        
+
         windowResizeCallback(window.width, window.height)
-        
+
         val initialScene = get<Scene>()
-        
+
         var last = now
         while (!done) {
             val dt = now - last
@@ -69,80 +69,80 @@ class Angine : KoinComponent {
             initialScene.world.step(dt)
             window.swapBuffers()
         }
-        
+
         window.visible = false
     }
-    
+
     @Suppress("UNUSED_PARAMETER")
     private fun windowMoveCallback(w: Int, h: Int) {
     }
-    
+
     private fun framebufferCallback(w: Int, h: Int) {
         graphics.setViewport(0, 0, w, h)
     }
-    
+
     private fun windowResizeCallback(w: Int, h: Int) {
         if (w == 0 || h == 0) return
         resizeEventListeners.forEach { it.onResize(w, h) }
     }
-    
+
     private fun mouseScrollCallback(x: Int, y: Int) {
-    
+
     }
-    
+
     private fun mouseMoveCallback(x: Int, y: Int) {
-    
+
     }
-    
+
     private fun mouseCallback(mouseButton: MouseButton, actionState: ActionState, modifiers: Modifiers) {
         this.modifiers = modifiers
         when (actionState) {
             ActionState.Pressed -> {
                 mouseState[mouseButton] = true
             }
-            
+
             ActionState.Released -> {
                 mouseState[mouseButton] = false
             }
-            
+
             else -> {
             }
         }
     }
-    
+
     private fun keyCallback(key: Key, actionState: ActionState, modifiers: Modifiers) {
         this.modifiers = modifiers
         when (actionState) {
             ActionState.Pressed -> {
                 keyboardState[key] = true
             }
-            
+
             ActionState.Released -> {
                 keyboardState[key] = false
             }
-            
+
             else -> {
             }
         }
     }
-    
+
     fun exit() {
         done = true
     }
-    
+
     companion object : KoinComponent {
         fun launch(vararg userModules: Module) {
             val koinInstance = startKoin {
                 logger(PrintLogger(Level.ERROR))
                 modules(*userModules)
             }
-            
+
             val angine = get<Angine>()
             angine.resizeEventListeners += get<WireframeRenderer>()
             angine.run()
             get<WireframeRenderer>().dispose()
             get<Window>().dispose()
-            
+
             koinInstance.close()
         }
     }

@@ -12,9 +12,9 @@ enum class ActionState {
 
 class MouseState {
     internal val pressed = BooleanArray(MouseButton.values().size) { false }
-    
+
     operator fun get(button: MouseButton) = pressed[button.ordinal]
-    
+
     internal operator fun set(button: MouseButton, state: Boolean) {
         pressed[button.ordinal] = state
     }

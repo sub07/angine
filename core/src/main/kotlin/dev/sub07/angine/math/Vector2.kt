@@ -12,7 +12,7 @@ import kotlin.math.sin
 interface Vec {
     val xc: Float
     val yc: Float
-    
+
     fun norm(): Float
     fun norm2(): Float
     fun normal(): MutableVec
@@ -80,81 +80,81 @@ private class VecImpl(override var x: Float, override var y: Float) : Vec, Mutab
         get() = x
     override val yc: Float
         get() = y
-    
+
     override fun norm(): Float = Geometry.norm(x, y)
-    
+
     override fun norm2(): Float = Geometry.norm2(x, y)
-    
+
     override fun normal(): MutableVec = vec(y, -x)
-    
+
     override fun dist(x: Number, y: Number): Float = Geometry.dist(this.x, this.y, x.f, y.f)
-    
+
     override fun dist2(x: Number, y: Number): Float = Geometry.dist2(this.x, this.y, x.f, y.f)
-    
+
     override fun middle(x: Number, y: Number): MutableVec = vec(x.f / 2f, y.f / 2f)
-    
+
     override fun det(x: Number, y: Number): Float = Geometry.det(this.x, this.y, x, y)
-    
+
     override fun dot(x: Number, y: Number): Float = Geometry.dot(this.x, this.y, x, y)
-    
+
     override fun angle(x: Number, y: Number): Float = Geometry.angle(this.x, this.y, x, y)
-    
+
     override fun negated(): MutableVec = vec(-x, -y)
-    
+
     override fun copy(): MutableVec = vec(x, y)
-    
+
     override fun rotated(angle: Number): MutableVec {
         val cos = cos(angle.f)
         val sin = sin(angle.f)
         return vec(x * cos - y * sin, x * sin + y * cos)
     }
-    
+
     override fun normalized(): MutableVec = vec(x / norm(), y / norm())
-    
+
     override fun inverted(): MutableVec = vec(1f / x, 1f / y)
-    
+
     override fun added(x: Number, y: Number): MutableVec = vec(this.x + x.f, this.y + y.f)
-    
+
     override fun subtracted(x: Number, y: Number): MutableVec = vec(this.x - x.f, this.y - y.f)
-    
+
     override fun multiplied(x: Number, y: Number): MutableVec = vec(this.x * x.f, this.y * y.f)
-    
+
     override fun divided(x: Number, y: Number): MutableVec = vec(this.x / x.f, this.y / y.f)
-    
+
     override fun added(x: Number): MutableVec = vec(this.x + x.f, this.y + x.f)
-    
+
     override fun subtracted(x: Number): MutableVec = vec(this.x - x.f, this.y - x.f)
-    
+
     override fun multiplied(x: Number): MutableVec = vec(this.x * x.f, this.y * x.f)
-    
+
     override fun divided(x: Number): MutableVec = vec(this.x / x.f, this.y / x.f)
-    
+
     override fun plus(vec: Vec): MutableVec = vec(this.x + vec.xc, this.y + vec.yc)
-    
+
     override fun plus(value: Number): MutableVec = vec(this.x + value.f, this.y + value.f)
-    
+
     override fun minus(vec: Vec): MutableVec = vec(this.x - vec.xc, this.y - vec.yc)
-    
+
     override fun minus(value: Number): MutableVec = vec(this.x - value.f, this.y - value.f)
-    
+
     override fun times(vec: Vec): MutableVec = vec(this.x * vec.xc, this.y * vec.yc)
-    
+
     override fun times(value: Number): MutableVec = vec(this.x * value.f, this.y * value.f)
-    
+
     override fun div(vec: Vec): MutableVec = vec(this.x / vec.xc, this.y / vec.yc)
-    
+
     override fun div(value: Number): MutableVec = vec(this.x / value.f, this.y / value.f)
-    
+
     override fun rem(value: Number): MutableVec = vec(x % value.f, y % value.f)
-    
+
     override fun rem(vec: Vec): MutableVec = vec(x % vec.xc, y % vec.yc)
-    
+
     override fun set(x: Number, y: Number): MutableVec {
         this.x = x.f
         this.y = y.f
         return this
     }
-    
+
     override fun rotate(angle: Number): MutableVec {
         val cos = cos(angle.f)
         val sin = sin(angle.f)
@@ -164,108 +164,108 @@ private class VecImpl(override var x: Float, override var y: Float) : Vec, Mutab
         this.y = y
         return this
     }
-    
+
     override fun normalize(): MutableVec {
         val norm = norm()
         x /= norm
         y /= norm
         return this
     }
-    
+
     override fun negate(): MutableVec {
         x = -x
         y = -y
         return this
     }
-    
+
     override fun invert(): MutableVec {
         x = 1f / x
         y = 1f / y
         return this
     }
-    
+
     override fun add(x: Number, y: Number): VecImpl {
         this.x += x.f
         this.y += y.f
         return this
     }
-    
+
     override fun sub(x: Number, y: Number): VecImpl {
         this.x -= x.f
         this.y -= y.f
         return this
     }
-    
+
     override fun mul(x: Number, y: Number): VecImpl {
         this.x *= x.f
         this.y *= y.f
         return this
     }
-    
+
     override fun div(x: Number, y: Number): VecImpl {
         this.x /= x.f
         this.y /= y.f
         return this
     }
-    
+
     override fun plusAssign(vec: Vec) {
         this.x += vec.xc
         this.y += vec.yc
     }
-    
+
     override fun plusAssign(value: Number) {
         this.x += value.f
         this.y += value.f
     }
-    
+
     override fun minusAssign(vec: Vec) {
         this.x -= vec.xc
         this.y -= vec.yc
     }
-    
+
     override fun minusAssign(value: Number) {
         this.x -= value.f
         this.y -= value.f
     }
-    
+
     override fun timesAssign(vec: Vec) {
         this.x *= vec.xc
         this.y *= vec.yc
     }
-    
+
     override fun timesAssign(value: Number) {
         this.x *= value.f
         this.y *= value.f
     }
-    
+
     override fun divAssign(vec: Vec) {
         this.x /= vec.xc
         this.y /= vec.yc
     }
-    
+
     override fun divAssign(value: Number) {
         this.x /= value.f
         this.y /= value.f
     }
-    
+
     override fun remAssign(value: Number) {
         this.x %= value.f
         this.y %= value.f
     }
-    
+
     override fun remAssign(vec: Vec) {
         this.x %= vec.xc
         this.y %= vec.yc
     }
-    
+
     override fun component1(): Float = x
-    
+
     override fun component2(): Float = y
-    
+
     override infix fun eq(other: Vec): Boolean = (x - other.xc).isNearZero() && (y - other.yc).isNearZero()
-    
+
     override infix fun neq(other: Vec): Boolean = !eq(other)
-    
+
     override fun toString() = "($x, $y)"
 }
 

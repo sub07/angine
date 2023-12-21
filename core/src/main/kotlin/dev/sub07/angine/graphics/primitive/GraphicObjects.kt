@@ -63,7 +63,7 @@ interface Texture : GpuObject {
     val filter: TextureFilter
     val wrap: TextureWrap
     val format: PixelFormat
-    
+
     fun bind(textureUnit: Int)
     fun fetchData(): ByteBuffer
     fun sendData(data: ByteBuffer)

@@ -11,11 +11,11 @@ class Builder : KoinComponent {
     fun required(vararg componentType: KClass<out Component>) {
         required += componentType
     }
-    
+
     fun exclude(vararg componentType: KClass<out Component>) {
         excluded += componentType
     }
-    
+
     fun get() = get<EntityFilter> { parametersOf(EntityFilter.Conf(required, excluded)) }
 }
 
@@ -23,7 +23,7 @@ fun entityFilter(conf: Builder.() -> Unit = {}): EntityFilter = Builder().apply(
 
 interface EntityFilter {
     data class Conf(val required: List<KClass<out Component>>, val excluded: List<KClass<out Component>>)
-    
+
     fun isValid(e: Entity): Boolean
     fun get(entities: Iterable<Entity>) = entities.filter(this::isValid)
 }
@@ -38,7 +38,7 @@ interface Entity {
     operator fun <C : Component> plusAssign(component: C) {
         add(component, true)
     }
-    
+
     operator fun <C : Component> minusAssign(component: KClass<C>) {
         remove(component)
     }

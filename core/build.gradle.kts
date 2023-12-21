@@ -19,13 +19,13 @@ dependencies {
     runtimeOnly("org.lwjgl", "lwjgl-jemalloc", classifier = lwjglNatives)
     runtimeOnly("org.lwjgl", "lwjgl-opengl", classifier = lwjglNatives)
     runtimeOnly("org.lwjgl", "lwjgl-stb", classifier = lwjglNatives)
-    
+
     api("io.insert-koin:koin-core:$koinVersion")
-    
+
     api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
     implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
     implementation("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
-    
+
     testImplementation(kotlin("test"))
 }
 

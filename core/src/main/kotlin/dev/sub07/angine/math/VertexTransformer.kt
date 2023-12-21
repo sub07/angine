@@ -17,11 +17,11 @@ class VertexTransformer(
         input.rotate(rotation)
         input += translation
     }
-    
+
     fun transformed(input: Vec): MutableVec = input.copy().apply {
         transform(this)
     }
-    
+
     fun transformed(vertices: Floats): Floats {
         val res = floats(vertices.size)
         vecPool.borrow {
@@ -34,7 +34,7 @@ class VertexTransformer(
         }
         return res
     }
-    
+
     fun transform(vertices: MutableFloats): MutableFloats {
         vecPool.borrow {
             for (i in vertices.indices step 2) {

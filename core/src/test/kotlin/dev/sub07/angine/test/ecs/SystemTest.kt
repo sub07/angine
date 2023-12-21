@@ -12,9 +12,9 @@ import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
 class SystemTest : TestCase() {
-    
+
     class StringComponent(var name: String) : Component
-    
+
     class StringTestSystem : System(entityFilter { required(StringComponent::class) }) {
         override fun doUpdate(entities: List<Entity>, dt: Duration) {
             entities.forEach {
@@ -23,7 +23,7 @@ class SystemTest : TestCase() {
             }
         }
     }
-    
+
     @Test
     fun `test string test system`() {
         val printSystem = StringTestSystem()

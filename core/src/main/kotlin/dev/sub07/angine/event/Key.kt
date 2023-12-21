@@ -23,9 +23,9 @@ enum class Key {
 
 class KeyboardState {
     internal val pressed = BooleanArray(Key.values().size) { false }
-    
+
     operator fun get(key: Key) = pressed[key.ordinal]
-    
+
     internal operator fun set(key: Key, state: Boolean) {
         pressed[key.ordinal] = state
     }

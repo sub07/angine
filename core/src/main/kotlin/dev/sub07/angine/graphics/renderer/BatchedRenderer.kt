@@ -20,7 +20,11 @@ abstract class BatchedRenderer(
     protected val data: FloatArray = FloatArray(batchSize * components.sum())
     private val vbo = graphics.makeArrayBuffer(data, BufferUsage.Dynamic)
     private val vao = graphics.makeVao(
-        components.size, components.map { components.sum() * Float.SIZE_BYTES }.toIntArray(), getOffsetFromComponents(components), components, vbo
+        components.size,
+        components.map { components.sum() * Float.SIZE_BYTES }.toIntArray(),
+        getOffsetFromComponents(components),
+        components,
+        vbo
     )
     protected var drawing: Boolean = false
     var target: Framebuffer = graphics.window
@@ -35,26 +39,26 @@ abstract class BatchedRenderer(
         }
     protected var index: Int = 0
         private set
-    
+
     protected var nbVertices: Int = 0
         private set
-    
+
     var camera: Camera = Camera(600).also { shader.send(it) }
         set(value) {
             field = value
             shader.send(field)
         }
-    
+
     init {
         shader.send("flipY", true)
     }
-    
+
     override fun onResize(width: Int, height: Int) {
         shader.send("projection", 2f / width, 2f / height)
         camera.resize(width, height)
         shader.send(camera)
     }
-    
+
     fun addVertex(vararg data: Float) {
         check(data.size == components.sum()) { "Data size must be ${components.sum()} but was ${data.size}" }
         data.forEach {
@@ -62,18 +66,18 @@ abstract class BatchedRenderer(
         }
         nbVertices++
     }
-    
+
     fun begin() {
         check(!drawing) { "Renderer already active" }
         this.drawing = true
     }
-    
+
     fun end() {
         check(drawing) { "Renderer not drawing, call begin first" }
         flush()
         this.drawing = false
     }
-    
+
     protected fun flush() {
         check(drawing) { "Renderer is not active" }
         if (index == 0) return
@@ -84,9 +88,9 @@ abstract class BatchedRenderer(
         index = 0
         nbVertices = 0
     }
-    
+
     protected abstract fun flushImpl()
-    
+
     private fun onTargetChange(newTarget: Framebuffer) {
         if (newTarget == graphics.window) {
             shader.send("flipY", true)
@@ -96,19 +100,19 @@ abstract class BatchedRenderer(
         shader.send("flipY", newTarget == graphics.window)
         onTargetChangeImpl(newTarget)
     }
-    
+
     protected open fun onTargetChangeImpl(newTarget: Framebuffer) = Unit
-    
+
     protected fun check(message: String = "Renderer not active") {
         check(drawing) { message }
     }
-    
+
     override fun dispose() {
         shader.dispose()
         vao.dispose()
         vbo.dispose()
     }
-    
+
     companion object {
         private fun getOffsetFromComponents(components: IntArray): LongArray {
             val offsets = LongArray(components.size)

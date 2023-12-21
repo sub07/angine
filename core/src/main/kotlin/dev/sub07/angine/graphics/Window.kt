@@ -14,9 +14,9 @@ import org.lwjgl.glfw.GLFWImage
 import org.lwjgl.system.MemoryStack
 
 class Window : Disposable, KoinComponent {
-    
+
     private val config by inject<AngineConfiguration>()
-    
+
     private val handle: Long
     var title: String = config.appName
         set(value) {
@@ -35,7 +35,7 @@ class Window : Disposable, KoinComponent {
         private set
     var windowY = 0
         private set
-    
+
     val done: Boolean get() = glfwWindowShouldClose(handle)
     var visible: Boolean = false
         set(value) {
@@ -51,7 +51,7 @@ class Window : Disposable, KoinComponent {
             field = value
             glfwSwapInterval(value)
         }
-    
+
     internal var keyCallback: (Key, ActionState, Modifiers) -> Unit = { _, _, _ -> }
         set(value) {
             glfwSetKeyCallback(handle) { _, key, _, action, mods ->
@@ -61,7 +61,7 @@ class Window : Disposable, KoinComponent {
             }
             field = value
         }
-    
+
     internal var mouseButtonCallback: (MouseButton, ActionState, Modifiers) -> Unit = { _, _, _ -> }
         set(value) {
             glfwSetMouseButtonCallback(handle) { _, button, action, mods ->
@@ -71,8 +71,8 @@ class Window : Disposable, KoinComponent {
             }
             field = value
         }
-    
-    
+
+
     internal var windowPositionCallback: (Int, Int) -> Unit = { _, _ -> }
         set(value) {
             glfwSetWindowPosCallback(handle) { _, x, y ->
@@ -82,7 +82,7 @@ class Window : Disposable, KoinComponent {
             }
             field = value
         }
-    
+
     internal var mouseMove: (Int, Int) -> Unit = { _, _ -> }
         set(value) {
             glfwSetCursorPosCallback(handle) { _, x, y ->
@@ -92,7 +92,7 @@ class Window : Disposable, KoinComponent {
             }
             field = value
         }
-    
+
     internal var mouseScrollCallback: (Int, Int) -> Unit = { _, _ -> }
         set(value) {
             glfwSetScrollCallback(handle) { _, x, y ->
@@ -100,7 +100,7 @@ class Window : Disposable, KoinComponent {
             }
             field = value
         }
-    
+
     internal var windowSizeCallback: (Int, Int) -> Unit = { _, _ -> }
         set(value) {
             glfwSetWindowSizeCallback(handle) { _, w, h ->
@@ -110,7 +110,7 @@ class Window : Disposable, KoinComponent {
             }
             field = value
         }
-    
+
     internal var framebufferSizeCallback: (Int, Int) -> Unit = { _, _ -> }
         set(value) {
             glfwSetFramebufferSizeCallback(handle) { _, w, h ->
@@ -118,20 +118,20 @@ class Window : Disposable, KoinComponent {
             }
             field = value
         }
-    
+
     private var previousCursor = 0L
-    
+
     init {
         if (windowCounter == 0) {
             glfwInit()
             GLFWErrorCallback.createPrint().set()
         }
-        
+
         glfwWindowHint(GLFW_RESIZABLE, if (config.isWindowResizable) GLFW_TRUE else GLFW_FALSE)
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4)
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6)
         glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE)
-        
+
         if (config.fullscreen) {
             val monitor = getMonitorFromIndex(config.monitorIndex)
             val mode = glfwGetVideoMode(monitor)!!
@@ -139,7 +139,7 @@ class Window : Disposable, KoinComponent {
             glfwWindowHint(GLFW_GREEN_BITS, mode.greenBits())
             glfwWindowHint(GLFW_BLUE_BITS, mode.blueBits())
             glfwWindowHint(GLFW_REFRESH_RATE, mode.refreshRate())
-            
+
             handle = if (config.windowWidth == 0 && config.windowHeight == 0) {
                 glfwCreateWindow(mode.width(), mode.height(), config.appName, monitor, 0)
             } else {
@@ -152,7 +152,7 @@ class Window : Disposable, KoinComponent {
                 config.windowWidth, config.windowHeight, config.appName, 0, 0
             )
         }
-        
+
         MemoryStack.stackPush().use {
             val widthPtr = it.malloc()
             val heightPtr = it.malloc()
@@ -160,13 +160,13 @@ class Window : Disposable, KoinComponent {
             width = widthPtr.value
             height = heightPtr.value
         }
-        
+
         glfwMakeContextCurrent(handle)
         glfwSwapInterval(config.vsync.vSyncInterval)
-        
+
         windowCounter++
     }
-    
+
     override fun dispose() {
         windowCounter--
         glfwDestroyWindow(handle)
@@ -176,21 +176,21 @@ class Window : Disposable, KoinComponent {
             glfwSetErrorCallback(null)!!.free()
         }
     }
-    
+
     fun setWindowSize(width: Int, height: Int) {
         glfwSetWindowSize(handle, width, height)
         this.width = width
         this.height = height
     }
-    
+
     fun pollEvent() {
         glfwPollEvents()
     }
-    
+
     fun swapBuffers() {
         glfwSwapBuffers(handle)
     }
-    
+
     fun setCursor(img: Image, x: Int, y: Int) {
         if (previousCursor != 0L) glfwDestroyCursor(previousCursor)
         val i = GLFWImage.create()
@@ -198,7 +198,7 @@ class Window : Disposable, KoinComponent {
         previousCursor = glfwCreateCursor(i, x, y)
         glfwSetCursor(handle, previousCursor)
     }
-    
+
     companion object {
         private fun getMonitorFromIndex(index: Int): Long {
             glfwGetMonitors()!!.also {
@@ -206,7 +206,7 @@ class Window : Disposable, KoinComponent {
                 return it[index]
             }
         }
-        
+
         private var windowCounter = 0
     }
 }

@@ -18,13 +18,13 @@ inline fun <T, R> Pool<T>.borrow(block: (T) -> R): R {
 
 abstract class SimplePool<T>(initialSize: Int) : Pool<T> {
     private val pool = MutableList(initialSize) { create() }
-    
+
     override fun pool() = if (pool.isEmpty()) create() else pool.removeAt(pool.size - 1)
-    
+
     override fun pool(obj: T) {
         pool.add(obj)
     }
-    
+
     protected abstract fun create(): T
 }
 
@@ -37,13 +37,13 @@ abstract class StrictPool<T>(
 ) : Pool<T> {
     private val created = MutableList(initialPoolSize) { create() }
     private val current = created.toMutableList()
-    
+
     init {
         println("StrictPool used, please use simple pool for production.")
         check(initialPoolSize <= maxPoolSize) { "The initial size is bigger than the max size" }
         check(maxPoolSize > 0) { "The maximum pool size must be greater than 0" }
     }
-    
+
     override fun pool(): T {
         if (current.isEmpty() && created.size < maxPoolSize) {
             create().also {
@@ -54,7 +54,7 @@ abstract class StrictPool<T>(
         check(current.isNotEmpty()) { "This pool is not allowed to create more than $maxPoolSize object(s)" }
         return current.removeFirst().also(resetObj)
     }
-    
+
     override fun pool(obj: T) {
         check(obj in created) { "This object doesn't belong to this pool" }
         check(obj !in current) {
@@ -62,6 +62,6 @@ abstract class StrictPool<T>(
         }
         current.add(obj)
     }
-    
+
     protected abstract fun create(): T
 }
